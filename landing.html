@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrewBox — Kopi Pilihan, Langsung ke Pintu Kamu</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --brown:   #3b1f0e;
+      --caramel: #c8762a;
+      --cream:   #f5ede0;
+      --white:   #ffffff;
+      --gray:    #6b6b6b;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--white);
+      color: var(--brown);
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: var(--white);
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 1px; }
+    .logo span { color: var(--caramel); }
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav ul a { text-decoration: none; color: var(--brown); font-size: 0.95rem; }
+    nav ul a:hover { color: var(--caramel); }
+    .nav-cta {
+      background: var(--caramel);
+      color: var(--white);
+      padding: 10px 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      min-height: 88vh;
+      padding: 60px;
+      background: var(--cream);
+      gap: 40px;
+    }
+    .hero-text h1 {
+      font-size: 3.2rem;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .hero-text h1 em {
+      color: var(--caramel);
+      font-style: normal;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+    .btn-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--caramel);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 28px;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      border: 2px solid var(--brown);
+      color: var(--brown);
+      padding: 14px 32px;
+      border-radius: 28px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .hero-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-image .mockup-img {
+      width: 380px;
+      height: 420px;
+      background: linear-gradient(145deg, #6f3a18, #c8762a);
+      border-radius: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 5rem;
+      box-shadow: 0 24px 60px rgba(59,31,14,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .mockup-img::after {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+      top: -60px;
+      right: -60px;
+    }
+    .mockup-img p { font-size: 1rem; margin-top: 12px; opacity: 0.85; }
+
+    /* HOW IT WORKS */
+    .steps {
+      padding: 90px 60px;
+      text-align: center;
+    }
+    .steps h2 { font-size: 2.2rem; margin-bottom: 12px; }
+    .steps .subtitle { color: var(--gray); margin-bottom: 60px; }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .step {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 40px 30px;
+    }
+    .step .icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .step h3 { font-size: 1.15rem; margin-bottom: 10px; }
+    .step p { color: var(--gray); line-height: 1.6; font-size: 0.95rem; }
+
+    /* PRICING */
+    .pricing {
+      background: var(--cream);
+      padding: 90px 60px;
+      text-align: center;
+    }
+    .pricing h2 { font-size: 2.2rem; margin-bottom: 12px; }
+    .pricing .subtitle { color: var(--gray); margin-bottom: 60px; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .plan {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 28px;
+      border: 2px solid transparent;
+      transition: border 0.2s;
+    }
+    .plan.popular {
+      border-color: var(--caramel);
+      position: relative;
+    }
+    .popular-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--caramel);
+      color: white;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+    }
+    .plan h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--gray); }
+    .plan .price { font-size: 2.4rem; font-weight: bold; margin-bottom: 4px; }
+    .plan .price span { font-size: 1rem; color: var(--gray); font-weight: normal; }
+    .plan ul {
+      list-style: none;
+      margin: 24px 0;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .plan ul li { font-size: 0.92rem; color: var(--gray); }
+    .plan ul li::before { content: '✓  '; color: var(--caramel); font-weight: bold; }
+    .plan a {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 24px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      background: var(--brown);
+      color: white;
+      margin-top: 8px;
+    }
+    .plan.popular a { background: var(--caramel); }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      padding: 90px 60px;
+      text-align: center;
+    }
+    .testimonials h2 { font-size: 2.2rem; margin-bottom: 60px; }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .testi {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: left;
+    }
+    .testi .stars { color: var(--caramel); margin-bottom: 12px; font-size: 1.1rem; }
+    .testi p { color: var(--gray); line-height: 1.6; margin-bottom: 20px; font-size: 0.95rem; }
+    .testi .author { font-weight: bold; font-size: 0.92rem; }
+    .testi .role { color: var(--gray); font-size: 0.85rem; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: var(--brown);
+      color: var(--white);
+      text-align: center;
+      padding: 80px 60px;
+    }
+    .cta-banner h2 { font-size: 2.4rem; margin-bottom: 16px; }
+    .cta-banner p { color: #c9a98a; margin-bottom: 36px; font-size: 1rem; }
+    .cta-banner a {
+      background: var(--caramel);
+      color: white;
+      padding: 16px 40px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #1e0d04;
+      color: #9b7a5c;
+      text-align: center;
+      padding: 32px;
+      font-size: 0.85rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      nav ul { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 40px 24px; text-align: center; }
+      .hero-text p { max-width: 100%; }
+      .hero-image { order: -1; }
+      .mockup-img { width: 260px; height: 280px; }
+      .steps, .pricing, .testimonials { padding: 60px 24px; }
+      .steps-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+      .cta-banner { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Brew<span>Box</span></div>
+    <ul>
+      <li><a href="#">Cara Kerja</a></li>
+      <li><a href="#">Harga</a></li>
+      <li><a href="#">Koleksi Kopi</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+    <a href="#" class="nav-cta">Mulai Sekarang</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Kopi <em>Specialty</em> Terbaik, Langsung ke Rumah Kamu</h1>
+      <p>BrewBox mengkurasi biji kopi pilihan dari petani lokal Indonesia — dikirim segar setiap bulan, sesuai selera kamu.</p>
+      <div class="btn-group">
+        <a href="#" class="btn-primary">Mulai Langganan</a>
+        <a href="#" class="btn-secondary">Lihat Koleksi</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="mockup-img">
+        ☕
+        <p>Kopi Segar Tiap Bulan</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="steps">
+    <h2>Semudah 1, 2, 3</h2>
+    <p class="subtitle">Dari pilih sampai seduh — semua simpel.</p>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="icon">📋</div>
+        <h3>1. Pilih Paket</h3>
+        <p>Sesuaikan frekuensi, jumlah, dan tingkat roast yang kamu suka. Single origin atau blend — terserah kamu.</p>
+      </div>
+      <div class="step">
+        <div class="icon">🚚</div>
+        <h3>2. Kami Kirimkan</h3>
+        <p>Biji kopi di-roast fresh dan langsung dikirim ke pintu kamu dalam 24 jam. Gratis ongkir ke seluruh Indonesia.</p>
+      </div>
+      <div class="step">
+        <div class="icon">☕</div>
+        <h3>3. Nikmati</h3>
+        <p>Seduh dengan metode favoritmu. Kalau kurang cocok, kita ganti di pengiriman berikutnya — garansi kepuasan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing">
+    <h2>Pilih Paket Kamu</h2>
+    <p class="subtitle">Tanpa kontrak. Bisa cancel kapan saja.</p>
+    <div class="pricing-grid">
+      <div class="plan">
+        <h3>Starter</h3>
+        <div class="price">Rp79k <span>/ bulan</span></div>
+        <ul>
+          <li>200gr biji kopi pilihan</li>
+          <li>1 origin per bulan</li>
+          <li>Tasting notes</li>
+          <li>Gratis ongkir</li>
+        </ul>
+        <a href="#">Pilih Paket</a>
+      </div>
+      <div class="plan popular">
+        <div class="popular-badge">TERPOPULER</div>
+        <h3>Explorer</h3>
+        <div class="price">Rp149k <span>/ bulan</span></div>
+        <ul>
+          <li>400gr biji kopi pilihan</li>
+          <li>2 origin berbeda</li>
+          <li>Brewing guide eksklusif</li>
+          <li>Gratis ongkir + prioritas</li>
+        </ul>
+        <a href="#">Pilih Paket</a>
+      </div>
+      <div class="plan">
+        <h3>Connoisseur</h3>
+        <div class="price">Rp249k <span>/ bulan</span></div>
+        <ul>
+          <li>600gr biji kopi premium</li>
+          <li>3-4 origin rare</li>
+          <li>Akses early release</li>
+          <li>Konsultasi barista pribadi</li>
+        </ul>
+        <a href="#">Pilih Paket</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <h2>Kata Pelanggan Kami</h2>
+    <div class="testi-grid">
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <p>"Akhirnya nemu langganan kopi yang beneran fresh. Biji dari Gayo yang bulan lalu masih ngebul pas dibuka kotaknya!"</p>
+        <div class="author">Rizka Amalia</div>
+        <div class="role">Content Creator, Jakarta</div>
+      </div>
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <p>"Paket Explorer-nya worth it banget. Dapat 2 origin yang beda karakter, jadi bisa eksplor selera tanpa keluar rumah."</p>
+        <div class="author">Dimas Hartono</div>
+        <div class="role">Software Engineer, Bandung</div>
+      </div>
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <p>"Customer service-nya responsif. Sekali saya minta ganti ke medium roast, langsung diproses sebelum pengiriman."</p>
+        <div class="author">Sari Dewi</div>
+        <div class="role">Desainer Grafis, Yogyakarta</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <h2>Siap Upgrade Kopi Pagi Kamu?</h2>
+    <p>Coba 30 hari pertama — kalau nggak suka, uang kembali penuh.</p>
+    <a href="#">Mulai Langganan Sekarang</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 BrewBox Indonesia. Dibuat dengan ☕ dan cinta dari Bandung.</p>
+  </footer>
+
+</body>
+</html>
